@@ -1,9 +1,4 @@
-export type Dog = {
-    id: number;
-    name: string;
-    description: string;
-    image: string;
-}
+import { Dog } from "../type";
 
 export const dogs: Dog[] = [
   {

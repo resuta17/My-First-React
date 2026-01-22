@@ -1,6 +1,7 @@
-import type { Dog } from "../data/dogs";
+import { Dog } from "../type";
 
-type PuppiesListProps = {
+// indirect
+type PuppiesListProps = { 
   dogs: Dog[];
 };
 
@@ -14,11 +15,8 @@ export function PuppiesList({ dogs }: PuppiesListProps) {
   );
 }
 
-type DogCardProps = {
-  dog: Dog;
-};
-
-function DogCard({ dog }: DogCardProps) {
+// direct
+function DogCard({ dog }: { dog: Dog;}) {
   return (
     <li className="overflow-clip rounded-lg bg-white shadow-md ring ring-black/5 hover:-translate-y-0.5">
       <img
