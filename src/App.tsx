@@ -29,7 +29,7 @@ function Main(){
     <main>
       <div className="mt-24 grid gap-8 sm:grid-cols-2">
           <Search />
-          <ShortList />
+          <ShortList dogs={dogs} liked={liked} setliked = {setliked}/>
       </div>
       
       <PuppiesList dogs={dogs} liked={liked} setliked = {setliked} />
