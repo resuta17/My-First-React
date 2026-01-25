@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import './App.css'
 import { Header } from './Components/Header';
 import { NewForm } from './Components/NewForm';
@@ -5,6 +6,7 @@ import { PuppiesList } from './Components/PuppiesList';
 import { Search } from './Components/Search';
 import { ShortList } from './Components/Shortlist';
 import {dogs} from './data/dogs'
+import { Dog } from './type';
 
 
 function App() {
@@ -22,6 +24,7 @@ function App() {
 }
 
 function Main(){
+  const [liked, setliked] = useState<Dog['id'][]>([1,2]);
   return(
     <main>
       <div className="mt-24 grid gap-8 sm:grid-cols-2">
@@ -29,7 +32,7 @@ function Main(){
           <ShortList />
       </div>
       
-      <PuppiesList dogs={dogs} />
+      <PuppiesList dogs={dogs} liked={liked} setliked = {setliked} />
       <NewForm />
 
     </main>
