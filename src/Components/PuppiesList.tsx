@@ -4,15 +4,16 @@ import { LikeToggle } from "./LikeToggle";
 
 // indirect
 type PuppiesListProps = { 
+  searchQuery: string;
   dogs: Dog[];
   liked: Dog["id"][];
   setliked: Dispatch<SetStateAction< Dog["id"][]>>; //or setliked: (liked: number[]) => void;
 };
 
-export function PuppiesList({ dogs, liked, setliked }: PuppiesListProps) {
+export function PuppiesList({ dogs, liked, setliked, searchQuery }: PuppiesListProps) {
   return (
     <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {dogs.map((dog) => (
+      {dogs.filter(dog => dog.description.toLowerCase().includes(searchQuery.toLowerCase())).map((dog) => (
         <DogCard key={dog.id} dog={dog} liked={liked} setliked={setliked} />
       ))}
     </ul>
