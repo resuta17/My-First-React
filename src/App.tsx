@@ -5,7 +5,7 @@ import { NewForm } from './Components/NewForm';
 import { PuppiesList } from './Components/PuppiesList';
 import { Search } from './Components/Search';
 import { ShortList } from './Components/Shortlist';
-import {dogs} from './data/dogs'
+import { dogs as initialDogs } from './data/dogs';
 import { Dog } from './type';
 
 
@@ -26,6 +26,7 @@ function App() {
 function Main(){
   const [liked, setliked] = useState<Dog['id'][]>([1,2]);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [dogs, setDogs] = useState<Dog[]>(initialDogs);
   return(
     <main>
       <div className="mt-24 grid gap-8 sm:grid-cols-2">
@@ -34,7 +35,7 @@ function Main(){
       </div>
       
       <PuppiesList dogs={dogs} liked={liked} setliked = {setliked} searchQuery={searchQuery} />
-      <NewForm />
+      <NewForm setDogs={setDogs} dogs={dogs} />
 
     </main>
   );

@@ -1,4 +1,8 @@
-export function NewForm() {
+import { Dispatch, SetStateAction } from "react";
+import { Dog } from "../type"
+import { dogs } from "../data/dogs";
+
+export function NewForm({ setDogs, dogs }: {setDogs: Dispatch<SetStateAction<Dog[]>>; dogs: Dog[] }) {
     return (
         <div>
             
@@ -7,7 +11,19 @@ export function NewForm() {
         <div
           className="mt-12 flex items-center justify-between bg-white p-8 shadow ring ring-black/5"
         >
-          <form className="mt-4 flex w-full flex-col items-start gap-4">
+          <form 
+          action={(formData: FormData) => {const newDog: Dog ={
+            id: dogs.length + 1,
+            name: formData.get('name') as string,
+            description: formData.get('description') as string,
+            image: `src/assets/images/${dogs.length + 1}.jpg`
+          };
+          console.log(newDog)
+          // Add it to the array dogs
+          setDogs([...dogs, newDog]); 
+        }}
+          className="mt-4 flex w-full flex-col items-start gap-4">
+            
             <div className="grid w-full gap-6 md:grid-cols-3">
               <fieldset className="flex w-full flex-col gap-1">
                 <label htmlFor="name">Name</label
@@ -22,9 +38,9 @@ export function NewForm() {
                 <label htmlFor="trait">Personality trait</label
                 ><input
                   className="max-w-96 rounded-sm bg-white px-2 py-1 ring ring-black/20 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
-                  id="trait"
+                  id="description"
                   type="text"
-                  name="trait"
+                  name="description"
                 />
               </fieldset>
               <fieldset
