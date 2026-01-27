@@ -1,6 +1,8 @@
 import { Dispatch, SetStateAction } from "react";
 import { Dog } from "../type"
 import { dogs } from "../data/dogs";
+import { useFormStatus } from "react-dom";
+import { resolve } from "node:dns";
 
 export function NewForm({ setDogs, dogs }: {setDogs: Dispatch<SetStateAction<Dog[]>>; dogs: Dog[] }) {
     return (
@@ -12,7 +14,8 @@ export function NewForm({ setDogs, dogs }: {setDogs: Dispatch<SetStateAction<Dog
           className="mt-12 flex items-center justify-between bg-white p-8 shadow ring ring-black/5"
         >
           <form 
-          action={(formData: FormData) => {const newDog: Dog ={
+          action={async (formData: FormData) => { await new Promise((resolve) => setTimeout(resolve, 1500));
+            const newDog: Dog ={
             id: dogs.length + 1,
             name: formData.get('name') as string,
             description: formData.get('description') as string,
@@ -28,6 +31,7 @@ export function NewForm({ setDogs, dogs }: {setDogs: Dispatch<SetStateAction<Dog
               <fieldset className="flex w-full flex-col gap-1">
                 <label htmlFor="name">Name</label
                 ><input
+                 required
                   className="max-w-96 rounded-sm bg-white px-2 py-1 ring ring-black/20 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
                   id="name"
                   type="text"
@@ -37,6 +41,7 @@ export function NewForm({ setDogs, dogs }: {setDogs: Dispatch<SetStateAction<Dog
               <fieldset className="flex w-full flex-col gap-1">
                 <label htmlFor="trait">Personality trait</label
                 ><input
+                 required
                   className="max-w-96 rounded-sm bg-white px-2 py-1 ring ring-black/20 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
                   id="description"
                   type="text"
@@ -56,14 +61,22 @@ export function NewForm({ setDogs, dogs }: {setDogs: Dispatch<SetStateAction<Dog
                 />
               </fieldset>
             </div>
-            <button
-              className="mt-4 inline-block rounded bg-cyan-300 px-4 py-2 font-medium text-cyan-900 hover:bg-cyan-200 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
-              type="submit"
-            >
-              Add puppy
-            </button>
+            <SubmitButton />
           </form>
         </div>
         </div>
     );
+}
+
+function  SubmitButton() {
+  const status = useFormStatus();
+  return(
+     <button
+         className="mt-4 inline-block rounded bg-cyan-300 px-4 py-2 font-medium text-cyan-900 hover:bg-cyan-200 focus:ring-2 focus:ring-cyan-500 focus:outline-none disabled:bg-slate-200 disabled:cursor-not-allowed"
+         type="submit"
+         disabled={status.pending}
+        >
+          {status.pending ? `Adding ${status?.data?.get("name") || 'dog'}...` : "Add dog"}
+     </button>
+  )
 }
