@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Suspense, use, useState } from 'react';
 import './App.css'
 import { Header } from './Components/Header';
 import { NewForm } from './Components/NewForm';
@@ -7,6 +7,8 @@ import { Search } from './Components/Search';
 import { ShortList } from './Components/Shortlist';
 import { dogs as initialDogs } from './data/dogs';
 import { Dog } from './type';
+import { getDogs } from './queries';
+import { LoaderCircle } from 'lucide-react';
 
 
 function App() {
@@ -29,6 +31,10 @@ function Main(){
   const [dogs, setDogs] = useState<Dog[]>(initialDogs);
   return(
     <main>
+      <Suspense fallback={<LoaderCircle className="animate-spin stroke-slate-300"/>}>
+         <ApiDogs />
+      </Suspense>
+     
       <div className="mt-24 grid gap-8 sm:grid-cols-2">
           <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
           <ShortList dogs={dogs} liked={liked} setliked = {setliked}/>
@@ -53,6 +59,17 @@ function Container( { children } : any) {
   return (
     <div className="mx-auto max-w-5xl p-4 md:p-8"> 
       { children }
+    </div>
+  );
+}
+
+const puppyPromise = getDogs();
+
+function ApiDogs(){
+   const apiDogs = use(puppyPromise);
+  return(
+    <div>
+      <pre>{JSON.stringify(apiDogs, null, 2)}</pre>
     </div>
   );
 }
